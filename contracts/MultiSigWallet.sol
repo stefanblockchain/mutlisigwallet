@@ -56,7 +56,7 @@ contract MultiSigWallet {
         maxOwnerCount = _max_owner_count;
 
         for (uint256 i = 0; i < _owners.length; i++) {
-            if (!ownerMapping[_owners[i]] || _owners[i] == address(0)) revert();
+            if (ownerMapping[_owners[i]] || _owners[i] == address(0)) revert();
             ownerMapping[_owners[i]] = true;
         }
         owners = _owners;
@@ -144,6 +144,14 @@ contract MultiSigWallet {
         return confNumber >= approveCount;
     }
 
+    function getOwners() public view returns (address[] memory) {
+        return owners;
+    }
+
+    function isOwner(address owner) public view returns (bool) {
+        return ownerMapping[owner];
+    }
+
     function transactionVote(uint256 transactionId, bool confirmation)
         public
         onlyOwner
@@ -154,4 +162,11 @@ contract MultiSigWallet {
         emit Confirmation(msg.sender, transactionId);
     }
 
+    fallback() external payable {
+        emit Deposit(msg.sender, msg.value);
+    }
+
+    receive() external payable {
+        emit Deposit(msg.sender, msg.value);
+    }
 }
