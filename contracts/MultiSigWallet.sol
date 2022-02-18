@@ -162,6 +162,29 @@ contract MultiSigWallet {
         emit Confirmation(msg.sender, transactionId);
     }
 
+    function transactionData(uint256 transactionId)
+        public
+        view
+        returns (
+            address,
+            uint256,
+            bytes memory,
+            bool
+        )
+    {
+        require(
+            transactionId < transactions.length,
+            "Transaction doesn't exists"
+        );
+        Transaction memory transaction = transactions[transactionId];
+        return (
+            transaction.destination,
+            transaction.value,
+            transaction.data,
+            transaction.executed
+        );
+    }
+
     fallback() external payable {
         emit Deposit(msg.sender, msg.value);
     }
