@@ -13,3 +13,5 @@ npx hardhat node
 node scripts/sample-script.js
 npx hardhat help
 ```
+
+Contract is deployed on rinkeby test network, you can see it by clicking on https://rinkeby.etherscan.io/address/0x19caf4EC6E2CE810F385675f775B841FBfb7BE0b#code
