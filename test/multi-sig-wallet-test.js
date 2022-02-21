@@ -3,7 +3,7 @@ const { ethers } = require("hardhat");
 
 describe("MultiSigWallet", function () {
     let owner, add1, add2;
-    let multiSigWallet, MultiSigWallet;
+    let multiSigWallet, MultiSigWallet, provider;
 
     beforeEach(async function () {
         [owner, add1, add2] = await ethers.getSigners();
@@ -11,6 +11,8 @@ describe("MultiSigWallet", function () {
         MultiSigWallet = await ethers.getContractFactory("MultiSigWallet");
         multiSigWallet = await MultiSigWallet.deploy(20, [owner.address, add1.address]);
         await multiSigWallet.deployed();
+
+        provider = await ethers.getDefaultProvider();
     });
     it("Should return correct list of owners", async function () {
         const owners = await multiSigWallet.getOwners();
@@ -57,8 +59,5 @@ describe("MultiSigWallet", function () {
         voteCount = await multiSigWallet.getConfirmationCount(transationId.value);
         expect(voteCount).to.equal(0);
     });
-
-    it("Everyone should be able to send ether to Multi sig wallet", async function () {
-        //to do
-    });
+  
 });
